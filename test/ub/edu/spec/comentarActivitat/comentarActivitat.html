@@ -1,0 +1,64 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<head>
+    <title>UC11: Comentar Activitat</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>UC11: Comentar Activitat</h1>
+
+<h2>Acceptance Criteria 11.1: Activitat invalida</h2>
+
+<div c:example="one">
+    <h5>Example del test d'acceptació 11.1</h5>
+    <p>
+        Posem un usuari existent
+        <span c:set="#user">ajaleo@gmail.com</span>
+        amb una excursio existent
+        <span c:set="#excursio">Delta de l'Ebre</span>,
+        una activitat existent
+        <span c:set="#activitat">Ciclisme</span>
+        no comprada per l'usuari previament i un text de comentari
+        <span c:set="#comentari">Molt divertit!</span>,
+        el sistema hauria de donar
+        <span c:assertEquals="comentarActivitat(#user, #excursio, #activitat, #comentari)">L'activitat encara no ha estat comprada</span>.
+    </p>
+</div>
+
+<h2>Acceptance Criteria 11.2: Comentari buit</h2>
+
+<div c:example="two">
+    <h5>Example del test d'acceptació 11.2</h5>
+    <p>
+        Posem un usuari existent
+        <span c:set="#user">ajaleo@gmail.com</span>
+        amb una excursio existent
+        <span c:set="#excursio">La Foradada</span>,
+        una activitat existent
+        <span c:set="#activitat">Escalada</span>
+        comprada per l'usuari previament, i un text de comentari
+        <span c:set="#comentari"></span>,
+        el sistema hauria de donar
+        <span c:assertEquals="comentarActivitat(#user, #excursio, #activitat, #comentari)">El text del comentari no pot ser buit</span>.
+    </p>
+</div>
+
+<h2>Acceptance Criteria 11.3: Comentari publicat</h2>
+
+<div c:example="three">
+    <h5>Example del test d'acceptació 11.3</h5>
+    <p>
+        Posem un usuari existent
+        <span c:set="#user">ajaleo@gmail.com</span>
+        amb una excursio existent
+        <span c:set="#excursio">La Foradada</span>,
+        una activitat existent
+        <span c:set="#activitat">Escalada</span>
+        comprada per l'usuari previament, i un text de comentari
+        <span c:set="#comentari">Molt divertit!</span>,
+        el sistema hauria de donar
+        <span c:assertEquals="comentarActivitat(#user, #excursio, #activitat, #comentari)">Comentari publicat</span>.
+    </p>
+</div>
+
+</body>
+</html>

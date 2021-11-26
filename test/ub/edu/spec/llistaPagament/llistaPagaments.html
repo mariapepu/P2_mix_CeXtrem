@@ -1,0 +1,45 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US11: Llistar pagaments</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<h1>US11: Llistar pagaments</h1>
+<ul>
+    <li><h3>Com a sòcia de ceXtrem</h3></li>
+    <li><h3>Vull llistar els meus pagaments</h3></li>
+    <li><h3>Per tal de veure l'estat dels mateixos</h3></li>
+</ul>
+<h3>________________________________________________________ </h3>
+
+
+<h4>Criteris d'acceptacio:</h4>
+<ul>
+    <li>A -> el soci veu la llista dels seus pagaments</li>
+    <li>B -> el soci no te cap pagaments</li>
+</ul>
+
+<div c:example="one">
+    <table c:execute="#valid=listPagamenmtsSoci(#user)">
+        <tr>
+            <th c:set="#user">nom soci</th>
+            <th c:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>
+                Pagament: 001 | Concepte: Ciclisme a Delta de l'Ebre | Valor: 35.4 | Estat: Pendent de pagament
+                Pagament: 002 | Concepte: Kayak a Delta de l'Ebre | Valor: 50.0 | Estat: Pendent de pagament
+                Pagament: 003 | Concepte: Escalada a La Foradada | Valor: 61.3 | Estat: Pagat
+            </td>
+        </tr>
+        <tr>
+            <td>judit121@gmail.com</td>
+            <td>No hi ha cap pagament</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

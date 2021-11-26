@@ -1,0 +1,74 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US2: Login de Soci</title>
+    <h3>Com a sòcia de ceXtrem</h3>
+    <h3>Vull iniciar la sessió del meu compte</h3>
+    <h3>Per tal d'accedir a les utilitats de l'aplicació</h3>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h4>Acceptance Criteria 2.1: Login Soci: Contrasenya erronia</h4>
+<p>
+    El sistema dona opció de login però la contrassenya donada és erronia.
+</p>
+<div concordion:example="one">
+    <h5>Example del test d'acceptació 2.1</h5>
+    Posem un usuari existent amb contrassenya erronia:
+    <span concordion:set="#user">ajaleo@gmail.com</span> amb contrassenya <span
+        concordion:set="#pass">INVENTADA11</span>
+    el sistema hauria de donar <span concordion:assertEquals="loginSoci(#user, #pass)">Contrassenya incorrecta</span>.
+</div>
+
+
+<h4>Acceptance Criteria 2.2: Login Soci: Correu erroni</h4>
+<p>
+    El sistema dona opció de login però el correu no coincideix amb el de cap compte.
+</p>
+<div concordion:example="two">
+    <h5>Example del test d'acceptació 2.2</h5>
+    Posem un usuari existent amb correu inexistent:
+    <span concordion:set="#user">gatigos@gmail.com</span> amb contrassenya <span
+        concordion:set="#pass">INVENTADA11</span>
+    el sistema hauria de donar <span concordion:assertEquals="loginSoci(#user, #pass)">Correu inexistent</span>.
+</div>
+
+<h4>Acceptance Criteria 2.3: Login Soci: Contrassenya oblidada</h4>
+<p>
+    El sistema retornarà la contrassenya d'un usuari si aquest escriu el seu correu electrònic correctament (això és
+    només un exemple,
+    cibersecurity people dislikes this).
+</p>
+<div concordion:example="three">
+    <h5>Example del test d'acceptació 2.3</h5>
+    Posem el correu d'un usuari:
+    <span concordion:set="#user">ajaleo@gmail.com</span> el sistema hauria de donar <span
+        concordion:assertEquals="recuperarContrassenya(#user)">ajaleoPassw7</span>.
+</div>
+
+<h4>Acceptance Criteria 2.4: Login Soci: Logins correctes</h4>
+<p>
+    El sistema dona opció de login i les dades introduïdes són correctes.
+</p>
+
+<div concordion:example="four">
+    <table concordion:execute="#valid=loginSoci(#user, #pass)">
+        <tr>
+            <th concordion:set="#user">Soci name</th>
+            <th concordion:set="#pass">Password</th>
+            <th concordion:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>ajaleoPassw7</td>
+            <td>Login correcte</td>
+        </tr>
+        <tr>
+            <td>dtomacal@yahoo.cat</td>
+            <td>Qwertyft5</td>
+            <td>Login correcte</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US10: Pagar Excursio</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<h1>US10: Pagar Excursio</h1>
+<ul>
+    <li><h3>Com a sòcia de ceXtrem</h3></li>
+    <li><h3>Vull pagar una excursio</h3></li>
+    <li><h3>Per tal de poder-la realiztar</h3></li>
+</ul>
+<h3>________________________________________________________ </h3>
+
+<h2>10.1: Pagar Excursio: Pagar amb compte Bancari</h2>
+<p>
+<h4>Criteris d'acceptacio:</h4>
+<ul>
+    <li>A -> el soci paga amb exit una excuriso que esta pendent de pagament</li>
+    <li>B -> el soci vol pagar una excursió que ja ha estat pagada anteriorment</li>
+    <li>C -> el soci vol pagar una excursio pero no introdueix be les dades del pagament en qüestió</li>
+    <li>D -> el soci vol pagar una excursio amb compte bancari però no te el seu compte afegit i per tant no pot fer el
+        pagament
+    </li>
+</ul>
+</p>
+<div concordion:example="one">
+    <table concordion:execute="#valid=pagarAmbCompte(#user, #exc, #act)">
+        <tr>
+            <th concordion:set="#user">nom soci</th>
+            <th concordion:set="#exc">excursio</th>
+            <th concordion:set="#act">activitats</th>
+            <th concordion:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>Delta de l'Ebre</td>
+            <td>Kayak</td>
+            <td>Excursio pagada amb exit</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>Delta de l'Ebre</td>
+            <td>Kayak</td>
+            <td>L'excusió ja esta pagada</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>Delta de l'Ebre</td>
+            <td>Parapent</td>
+            <td>No s'ha trobat el pagament</td>
+        </tr>
+        <tr>
+            <td>dtomacal@yahoo.cat</td>
+            <td>Delta de l'Ebre</td>
+            <td>Kayak</td>
+            <td>L'usuari no te compte bancari asociat</td>
+        </tr>
+
+    </table>
+</div>
+<h2>10.2: Pagar Excursio: Pagar amb Bizum</h2>
+<p>
+<h4>Criteris d'acceptacio:</h4>
+<ul>
+    <li>A -> el soci paga amb exit una excuriso que esta pendent de pagament</li>
+    <li>B -> el soci vol pagar una excursió que ja ha estat pagada anteriorment</li>
+    <li>C -> el soci vol pagar una excursio pero no introdueix be les dades del pagament en qüestió</li>
+    <li>D -> el soci vol pagar una excursio amb bizum i encara que no te compte bancari afegit ha de poder-ho fer
+        igualment
+    </li>
+</ul>
+</p>
+
+<div concordion:example="two">
+    <table concordion:execute="#valid=pagarAmbBizum(#user, #pagament)">
+        <tr>
+            <th concordion:set="#user">nom soci</th>
+            <th concordion:set="#pagament">codi pagament</th>
+            <th concordion:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>001</td>
+            <td>Excursio pagada amb exit</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>001</td>
+            <td>L'excusió ja esta pagada</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>007</td>
+            <td>No s'ha trobat el pagament</td>
+        </tr>
+        <tr>
+            <td>dtomacal@yahoo.cat</td>
+            <td>005</td>
+            <td>Excursio pagada amb exit</td>
+        </tr>
+
+    </table>
+</div>
+</body>
+</html>

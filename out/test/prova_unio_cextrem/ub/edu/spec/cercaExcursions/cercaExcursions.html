@@ -1,0 +1,75 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US4: Cercar excursions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>US4: Cercar excursions per espècies</h1>
+
+<h2>Criteri d'acceptació UC 4.1</h2>
+<p>
+<div concordion:example="one">
+    En aquest cas, no enregistrem cap espècie en el sistema. Quan el soci seleccioni l'opció per a cercar per espècies,
+    es mostrarà:
+    <table concordion:verify-rows="#especie : cercaExcursions()">
+        <tr>
+            <th concordion:assert-equals="#especie">Llistat d'espècies amb excursions:</th>
+        </tr>
+        <tr>
+            <td>No hi han espècies enregistrades</td>
+        </tr>
+    </table>
+</div>
+</p>
+
+<h2>Criteris d'acceptació UC 4.2 i 4.3</h2>
+<p>
+    <b>4.2</b>: Si hi ha alguna espècie sense cap excursió disponible, es mostra un 0 al costat del nom de l'espècie.
+    <b>4.3</b>: El sistema llista totes les espècies ordenades alfabeticament i amb el número d'excursions al costat.
+</p>
+<p>
+    Les espècies i les seves excursions que hem enregistrat en el sistema són les següents:
+<table>
+    <tr>
+        <th>Espècie</th>
+        <th>Excursions</th>
+    </tr>
+    <tr>
+        <td>Llúdriga</td>
+        <td>Museu Miró, La Foradada, El camí des Correu</td>
+    </tr>
+    <tr>
+        <td>Milà Reial</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>Turó europeu</td>
+        <td>Museu Miró, La Foradada</td>
+    </tr>
+</table>
+</p>
+
+<div concordion:example="two">
+    <p>
+        La següent taula mostra els resultats que esperem si demanem al sistema cercar les excursions per espècies, un
+        cop
+        hem <span concordion:execute="afegirEspecies()">afegit</span> les espècies de la taula anterior.
+    <table concordion:verify-rows="#especie : cercaExcursions()">
+        <tr>
+            <th concordion:assert-equals="#especie">Llistat d'espècies amb excursions:</th>
+        </tr>
+        <tr>
+            <td>Llúdriga 3</td>
+        </tr>
+        <tr>
+            <td>Milà Reial 0</td>
+        </tr>
+        <tr>
+            <td>Turó europeu 2</td>
+        </tr>
+    </table>
+    </p>
+
+</div>
+</body>
+</html>

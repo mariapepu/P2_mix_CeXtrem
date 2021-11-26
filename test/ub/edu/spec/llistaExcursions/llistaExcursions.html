@@ -1,0 +1,142 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US3: Llistar el catàleg d'excursions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>US3: Llistar el catàleg d'excursions</h1>
+<p>
+    Les excursions amb les seves dates són les següents:
+<table>
+    <tr>
+        <th>Excursió</th>
+        <th>Data</th>
+    </tr>
+    <tr>
+        <td>Museu Miró</td>
+        <td>29/09/2021</td>
+    </tr>
+    <tr>
+        <td>La Foradada</td>
+        <td>04/10/2021</td>
+    </tr>
+    <tr>
+        <td>El camí des Correu</td>
+        <td>10/10/2021</td>
+    </tr>
+    <tr>
+        <td>Delta de l'Ebre</td>
+        <td>11/10/2021</td>
+    </tr>
+    <tr>
+        <td>El PedraForca</td>
+        <td>13/10/2021</td>
+    </tr>
+    <tr>
+        <td>Colònia Güell</td>
+        <td>22/10/2021</td>
+    </tr>
+    <tr>
+        <td>Castell de Cardona</td>
+        <td>24/10/2021</td>
+    </tr>
+    <tr>
+        <td>Aiguamolls de l'Empordà</td>
+        <td>27/10/2021</td>
+    </tr>
+    <tr>
+        <td>Cap de Creus i Cadaqués</td>
+        <td>01/11/2021</td>
+    </tr>
+    <tr>
+        <td>Aigüestortes i Sant Maurici</td>
+        <td>03/11/2021</td>
+    </tr>
+</table>
+</p>
+<h2>Criteri d'acceptació UC 3.1</h2>
+<p>
+    El sistema llista totes les excursions del catàleg quan prem a veure excursions, endrecades per nom.
+</p>
+<div concordion:example="one">
+    <table concordion:verify-rows="#excursio : listCatalegExcursionsPerNom()">
+        <tr>
+            <th concordion:assert-equals="#excursio">Llistat de sèries del catàleg:</th>
+        </tr>
+        <tr>
+            <td>Aiguamolls de l'Empordà</td>
+        </tr>
+        <tr>
+            <td>Aigüestortes i Sant Maurici</td>
+        </tr>
+        <tr>
+            <td>Cap de Creus i Cadaqués</td>
+        </tr>
+        <tr>
+            <td>Castell de Cardona</td>
+        </tr>
+        <tr>
+            <td>Colònia Güell</td>
+        </tr>
+        <tr>
+            <td>Delta de l'Ebre</td>
+        </tr>
+        <tr>
+            <td>El PedraForca</td>
+        </tr>
+        <tr>
+            <td>El camí des Correu</td>
+        </tr>
+        <tr>
+            <td>La Foradada</td>
+        </tr>
+        <tr>
+            <td>Museu Miró</td>
+        </tr>
+    </table>
+</div>
+
+
+<h2>Criteri d'acceptació UC 3.2</h2>
+<p>
+    El sistema llista totes les excursions del catàleg quan prem a veure excursions, endrecades per data.
+</p>
+<div concordion:example="two">
+    <table concordion:verify-rows="#excursio : listCatalegExcursionsPerData()">
+        <tr>
+            <th concordion:assert-equals="#excursio">Llistat de sèries del catàleg:</th>
+        </tr>
+        <tr>
+            <td>Museu Miró</td>
+        </tr>
+        <tr>
+            <td>La Foradada</td>
+        </tr>
+        <tr>
+            <td>El camí des Correu</td>
+        </tr>
+        <tr>
+            <td>Delta de l'Ebre</td>
+        </tr>
+        <tr>
+            <td>El PedraForca</td>
+        </tr>
+        <tr>
+            <td>Colònia Güell</td>
+        </tr>
+        <tr>
+            <td>Castell de Cardona</td>
+        </tr>
+        <tr>
+            <td>Aiguamolls de l'Empordà</td>
+        </tr>
+        <tr>
+            <td>Cap de Creus i Cadaqués</td>
+        </tr>
+        <tr>
+            <td>Aigüestortes i Sant Maurici</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

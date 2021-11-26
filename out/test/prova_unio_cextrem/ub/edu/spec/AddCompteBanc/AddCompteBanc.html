@@ -1,0 +1,43 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US9: Afegir Compte Bancari</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<h1>US9: Afegir Compte Bancari</h1>
+<ul>
+    <li><h3>Com a sòcia de ceXtrem</h3></li>
+    <li><h3>Vull afegir el meu compte bancari</h3></li>
+    <li><h3>Per tal de pagar excurions amb ell</h3></li>
+</ul>
+<h3>____________________________________ </h3>
+<p>
+<h5>Criteris d'acceptacio:</h5>
+<ul>
+    <li>A -> el soci vol afegir un compte bancari</li>
+    <li>B -> el soci introdueix malament les dades</li>
+</ul>
+</p>
+
+<div c:example="one">
+    <table c:execute="#valid=addCompteBanc(#user, #num_id)">
+        <tr>
+            <th c:set="#user">Soci name</th>
+            <th c:set="#num_id">num id</th>
+            <th c:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>12376726</td>
+            <td>Compte afegit</td>
+        </tr>
+        <tr>
+            <td>no_existe</td>
+            <td>12376726</td>
+            <td>No s'ha pogut afegir</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

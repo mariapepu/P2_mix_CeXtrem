@@ -1,0 +1,57 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion" lang="ca-ES">
+<head>
+    <title>UC13: Visualitzar Comentaris d'una Activitat</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>UC13: Visualitzar Comentaris d'una Activitat</h1>
+
+<h2>Acceptance Criteria 13.1: No hi ha comentaris</h2>
+<div c:example="one">
+    <h5>Example del test d'acceptació 13.1</h5>
+    <p>
+        Donada una excursio existent
+        <span c:set="#excursio">Delta de l'Ebre</span>
+        i una activitat existent
+        <span c:set="#activitat">Ciclisme</span>
+        sense comentaris.
+    </p>
+    <table c:verify-rows="#comentari : llistarComentaris(#excursio, #activitat)">
+        <tr>
+            <th c:assert-equals="#comentari">Llistat de comentaris de l'activitat:</th>
+        </tr>
+        <tr>
+            <td>No hi ha comentaris</td>
+        </tr>
+    </table>
+</div>
+
+<h2>Acceptance Criteria 13.2: Hi ha comentaris</h2>
+<div c:example="two">
+    <h5>Example del test d'acceptació 13.2</h5>
+    <p>
+        Donada una excursio existent
+        <span c:set="#excursio">Delta de l'Ebre</span>
+        i una activitat existent
+        <span c:set="#activitat">Ciclisme</span>
+        amb
+        <span c:execute="initComentaris(#excursio, #activitat)">comentaris</span>.
+    </p>
+    <table c:verify-rows="#comentari : llistarComentaris(#excursio, #activitat)">
+        <tr>
+            <th c:assert-equals="#comentari">Llistat de comentaris de l'activitat:</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com: Molt divertit!</td>
+        </tr>
+        <tr>
+            <td>dtomacal@yahoo.cat: Increible</td>
+        </tr>
+        <tr>
+            <td>heisenberg@gmail.com: Una mica esgotador...</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

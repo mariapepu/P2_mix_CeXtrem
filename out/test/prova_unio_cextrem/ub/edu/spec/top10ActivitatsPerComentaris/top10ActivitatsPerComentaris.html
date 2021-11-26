@@ -1,0 +1,92 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion" lang="ca-ES">
+<head>
+    <title>UC14: Visualitzar TOP10 Activitats per Comentaris</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>UC14: Visualitzar TOP10 Activitats per Comentaris</h1>
+
+<h2>Acceptance Criteria 14.1: Cap activitat amb comentaris enregistrada</h2>
+<div c:example="one">
+    <h5>Example del test d'acceptació 14.1</h5>
+    <p>
+        Suposem que no hi ha cap activitat comentada al sistema.
+    </p>
+    <table c:verify-rows="#activitat : visualitzaTop10ActivitatsPerComentaris()">
+        <tr>
+            <th c:assert-equals="#activitat">TOP10 Activitats per Comentaris:</th>
+        </tr>
+        <tr>
+            <td>No hi ha activitats comentades</td>
+        </tr>
+    </table>
+</div>
+
+<h2>Acceptance Criteria 14.2: Menys de 9 activitats</h2>
+<div c:example="two">
+    <h5>Example del test d'acceptació 14.2</h5>
+    <p>
+        Suposem que hi ha menys de 9
+        <span c:execute="initPoquesActivitats()">activitats</span>
+        al sistema.
+    </p>
+    <table c:verify-rows="#activitat : visualitzaTop10ActivitatsPerComentaris()">
+        <tr>
+            <th c:assert-equals="#activitat">TOP10 Activitats per Comentaris:</th>
+        </tr>
+        <tr>
+            <td>Delta de l'Ebre - Ciclisme - 3 comentaris</td>
+        </tr>
+        <tr>
+            <td>La Foradada - Escalada - 1 comentaris</td>
+        </tr>
+    </table>
+</div>
+
+<h2>Acceptance Criteria 14.3: Hi ha 10 o mes activitats</h2>
+<div c:example="three">
+    <h5>Example del test d'acceptació 14.3</h5>
+    <p>
+        Suposem que hi ha 10 o mes
+        <span c:execute="initMoltesActivitats()">activitats</span>
+        al sistema.
+    </p>
+    <table c:verify-rows="#activitat : visualitzaTop10ActivitatsPerComentaris()">
+        <tr>
+            <th c:assert-equals="#activitat">TOP10 Activitats per Comentaris:</th>
+        </tr>
+        <tr>
+            <td>Cap de Creus i Cadaqués - Museu Casa Dali - 12 comentaris</td>
+        </tr>
+        <tr>
+            <td>Aiguamolls de l'Empordà - Anellament d'ocells - 11 comentaris</td>
+        </tr>
+        <tr>
+            <td>Colònia Güell - Espectacle - 9 comentaris</td>
+        </tr>
+        <tr>
+            <td>Colònia Güell - Visita guiada - 7 comentaris</td>
+        </tr>
+        <tr>
+            <td>Castell de Cardona - Mercat medieval - 7 comentaris</td>
+        </tr>
+        <tr>
+            <td>Castell de Cardona - Visita guiada - 4 comentaris</td>
+        </tr>
+        <tr>
+            <td>Delta de l'Ebre - Ciclisme - 3 comentaris</td>
+        </tr>
+        <tr>
+            <td>El camí des Correu - Mitja marato - 2 comentaris</td>
+        </tr>
+        <tr>
+            <td>El camí des Correu - Ciclisme - 2 comentaris</td>
+        </tr>
+        <tr>
+            <td>El camí des Correu - Visita Can Joan - 2 comentaris</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

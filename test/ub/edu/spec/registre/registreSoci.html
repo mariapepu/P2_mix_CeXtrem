@@ -1,0 +1,112 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>US1: Registre de nou Soci</title>
+    <h3>Com a usuari no registrat</h3>
+    <h3>Vull registrar-me a l'aplicació amb les dades corresponents</h3>
+    <h3>Per a ser soci de ceXtrem i accedir als continguts de l’aplicació</h3>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h4>Acceptance Criteria 1.1: Registre Soci: Nom d'usuari existent</h4>
+<p>
+    El sistema dona opció d'enregistrar però el seu correu ja existeix en la llista de socis
+
+</p>
+
+<div concordion:example="one">
+    <h5>Example del test d'acceptació 1.1</h5>
+    Posem un usuari existent:
+    <span concordion:set="#a">ajaleo@gmail.com</span> el sistema hauria de donar
+    <span concordion:assertEquals="getSoci(#a)">Soci existent</span>.
+</div>
+
+
+<h4>Acceptance Criteria 1.2: Registre Soci: Contrassenya no segura</h4>
+<p>
+    El sistema dona opció d'enregistrar però la contrassenya no és prou segura
+
+</p>
+<div concordion:example="two">
+    <h5>Example del test d'acceptació 1.2</h5>
+    <p>
+        Posem un usuari qualsevol no existent
+        <span concordion:set="#a">ajaleonou@gmail.com</span> i una contrassenya no segura: <span concordion:set="#b">werty</span>,
+        el sistema hauria de donar
+        <span concordion:assertEquals="validatePassword(#b)">Contrassenya no segura</span>.
+    </p>
+</div>
+
+<div concordion:example="twotwo">
+    <p>
+        Posem un usuari qualsevol no existent
+        <span concordion:set="#a">ajaleonou@gmail.com</span> i una contrassenya segura: <span concordion:set="#b">Qwertyuiop9</span>,
+        el sistema hauria de donar
+        <span concordion:assertEquals="validatePassword(#b)">Contrassenya segura</span>.
+    </p>
+</div>
+
+
+<h4>Acceptance Criteria 1.3: Registre Soci: Correu electronic no vàlid</h4>
+<p>
+    El sistema dóna l'opció d'enregistrar però el nom no té el format d'un correu electrònic
+</p>
+<div concordion:example="three">
+    <p>
+        Posem un usuari qualsevol amb un format incorrecte en el mail
+        <span concordion:set="#a">ajaleonougmail.com</span> , el sistema hauria de donar
+        <span concordion:assertEquals="validateUsername(#a)">Correu en format incorrecte</span>.
+    </p>
+    <p>
+        Posem un usuari qualsevol amb un format incorrecte en el mail
+        <span concordion:set="#a">ajaleonou@gmailcom</span>, el sistema hauria de donar
+        <span concordion:assertEquals="validateUsername(#a)">Correu en format incorrecte</span>.
+    </p>
+
+    <p>
+        Posem un usuari qualsevol amb format correcte
+        <span concordion:set="#a">ajaleonou@gmail.com</span>, el sistema hauria de donar
+        <span concordion:assertEquals="validateUsername(#a)">Correu en format correcte</span>.
+    </p>
+
+</div>
+
+
+<h4>Acceptance Criteria 14: Registre Soci: Registres correctes</h4>
+<p>
+    El sistema dona opció d'enregistrar i els registres són correctes
+
+</p>
+
+<div concordion:example="four">
+    <table concordion:execute="#valid=isValidRegistre(#sociName, #password)">
+        <tr>
+            <th concordion:set="#sociName">Soci name</th>
+            <th concordion:set="#password">Password</th>
+            <th concordion:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleonew@gmail.com</td>
+            <td>12wreTry</td>
+            <td>Soci creat correctament</td>
+        </tr>
+        <tr>
+            <td>pepito@domini.cat</td>
+            <td>qwerfrdsE1</td>
+            <td>Soci creat correctament</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>qwerfrdsE1</td>
+            <td>El nom ja existeix</td>
+        </tr>
+        <tr>
+            <td>pepitonew@domini.cat</td>
+            <td>qwert</td>
+            <td>Contrassenya no vàlida
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
