@@ -6,9 +6,9 @@ import java.util.TreeMap;
 
 public class Soci {
     CompteBancari compteBancari;
-    private String pwd;
-    private String nom;
-    private Map<String, Pagament> llistaPagaments;
+    private final String pwd;
+    private final String nom;
+    private final Map<String, Pagament> llistaPagaments;
 
 
     public Soci(String nom, String pwd) {
@@ -22,16 +22,8 @@ public class Soci {
         return pwd;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
     public String getName() {
         return nom;
-    }
-
-    public void setName(String nom) {
-        this.nom = nom;
     }
 
     public CompteBancari getCompteBancari() {
@@ -51,10 +43,6 @@ public class Soci {
             if (c.getIdTrans().equals(id)) return c;
         }
         return null;
-    }
-
-    public boolean containsPagament(Pagament pagament) {
-        return llistaPagaments.containsValue(pagament);
     }
 
     public String pagarCompteBancari(Pagament p) {
@@ -83,29 +71,20 @@ public class Soci {
 
     public String llistarPagaments() {
         //--ordenem el hash set primer--
-        String s = "";
-        TreeMap<String, Pagament> ts = (new TreeMap<String, Pagament>() {
-            public int compare(Pagament a1, Pagament a2) {
-                return a1.getData().compareTo(a2.getData());
-            }
+        StringBuilder s = new StringBuilder();
+        TreeMap<String, Pagament> ts = (new TreeMap<>() {
         });
         ts.putAll(llistaPagaments);
         //-----------------------------
         if (!ts.isEmpty()) {
             for (Pagament x : ts.values()) {
                 if (x.esta_pagat) {
-                    s += ("Pagament: " + x.id_transaccio
-                            + " | Concepte: " + x.concepte
-                            + " | Valor: " + x.valor
-                            + " | Estat: Pagat" + "\n");
+                    s.append("Pagament: ").append(x.id_transaccio).append(" | Concepte: ").append(x.concepte).append(" | Valor: ").append(x.valor).append(" | Estat: Pagat").append("\n");
                 } else {
-                    s += ("Pagament: " + x.id_transaccio
-                            + " | Concepte: " + x.concepte
-                            + " | Valor: " + x.valor
-                            + " | Estat: Pendent de pagament" + "\n");
+                    s.append("Pagament: ").append(x.id_transaccio).append(" | Concepte: ").append(x.concepte).append(" | Valor: ").append(x.valor).append(" | Estat: Pendent de pagament").append("\n");
                 }
             }
-            return s;
+            return s.toString();
         } else {
             return "No hi ha cap pagament";
         }

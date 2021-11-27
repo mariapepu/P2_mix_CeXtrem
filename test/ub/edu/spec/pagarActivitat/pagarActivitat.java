@@ -5,6 +5,7 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 import ub.edu.controller.Controller;
 import ub.edu.model.Bizum;
+import ub.edu.model.PayPal;
 
 @RunWith(ConcordionRunner.class)
 public class pagarActivitat {
@@ -23,6 +24,10 @@ public class pagarActivitat {
 
     public String pagarAmbBizum(String user, String pagament) {
         return controlador.pagar(user, pagament, new Bizum(10.6f));
+    }
+
+    public String pagarAmbPaypal(String user, String pagament) {
+        return controlador.pagar(user, pagament, new PayPal(user));
     }
 
 }

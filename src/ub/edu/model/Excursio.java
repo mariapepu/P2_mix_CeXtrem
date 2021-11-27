@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Excursio {
+    private final Set<Especie> llistaEspecies;
     private String nom;
     private LocalDate data;
-    private Set<Especie> llistaEspecies;
     private Map<String, Activitat> activitatsMap;
 
     public Excursio(String titol, String dataText) {

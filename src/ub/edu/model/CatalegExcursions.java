@@ -4,8 +4,7 @@ import java.util.*;
 
 public class CatalegExcursions {
     private Map<String, Excursio> excursionsMap;
-    private Map<String, Especie> especiesMap;
-    private Map<String, Activitat> activitatsMap;
+    private final Map<String, Especie> especiesMap;
 
 
     public CatalegExcursions() {
@@ -29,18 +28,9 @@ public class CatalegExcursions {
     }
 
     public void iniActivitatsMap() {
-        activitatsMap = new HashMap<>();
         addActivitat("Delta de l'Ebre", "Ciclisme", (float) 35.4);
         addActivitat("Delta de l'Ebre", "Kayak", (float) 50);
         addActivitat("La Foradada", "Escalada", (float) 61.3);
-    }
-
-    public void addActivity(String nomExcursio, String nomActivitat, float preu) {
-        Excursio excursio = excursionsMap.get(nomExcursio);
-        if (excursio != null) {
-            activitatsMap.put(nomActivitat, new Activitat(nomExcursio, nomActivitat, preu));
-            excursio.addActivitat(nomActivitat, preu);
-        }
     }
 
     /*--------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,11 +72,7 @@ public class CatalegExcursions {
 
     public Iterable<String> llistarCatalegExcursionsPerData() {
         List<Excursio> sortedList = getExcursionsList();
-        sortedList.sort(new Comparator<Excursio>() {
-            public int compare(Excursio a1, Excursio a2) {
-                return a1.getData().compareTo(a2.getData());
-            }
-        });
+        sortedList.sort(Comparator.comparing(Excursio::getData));
 
         List<String> excursionsDisponibles = new ArrayList<>();
         for (Excursio s : sortedList) {
@@ -124,7 +110,6 @@ public class CatalegExcursions {
         if (excursio == null) {
             throw new IllegalArgumentException("La excursio no existeix");
         }
-
         excursio.addActivitat(nomActivitat, preu);
     }
 
@@ -171,17 +156,12 @@ public class CatalegExcursions {
         return null;
     }
 
-    public void addPagament(String nomSoci, String comentari, Activitat act) {
-        act.addComentari(new Comentari(nomSoci, comentari));
-    }
     /*--------------------------------------------------------------------------------------------------------------------------------------------
                     LLISAR COMENTARIS
     --------------------------------------------------------------------------------------------------------------------------------------------*/
 
     public ArrayList<String> llistarComentaris(String nomExcursio, String nomActivitat) {
         ArrayList<String> comentarisOutput = new ArrayList<>();
-
-
         Excursio excursio = excursionsMap.getOrDefault(nomExcursio, null);
         if (excursio == null) {
             comentarisOutput.add("Excursio no existent");

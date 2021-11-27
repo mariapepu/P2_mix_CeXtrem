@@ -20,7 +20,7 @@ public class llistarComentarisActivitat {
     public void initComentaris(String excursio, String activitat) {
         String[][] comentaris = {
                 {"ajaleo@gmail.com", "Molt divertit!"},
-                {"dtomacal@yahoo.cat", "Increible"},
+                {"judit121@gmail.com", "Increible"},
                 {"heisenberg@gmail.com", "Una mica esgotador..."}
         };
         for (String[] comentari : comentaris) {

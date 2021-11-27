@@ -82,26 +82,58 @@
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>001</td>
+            <td>1</td>
             <td>Excursio pagada amb exit</td>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>001</td>
+            <td>1</td>
             <td>L'excusió ja esta pagada</td>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>007</td>
+            <td>7</td>
             <td>No s'ha trobat el pagament</td>
         </tr>
         <tr>
             <td>dtomacal@yahoo.cat</td>
-            <td>005</td>
+            <td>5</td>
             <td>Excursio pagada amb exit</td>
         </tr>
 
     </table>
 </div>
+
+<div concordion:example="tree">
+    <table concordion:execute="#valid=pagarAmbPaypal(#user, #pagament)">
+        <tr>
+            <th concordion:set="#user">nom soci</th>
+            <th concordion:set="#pagament">codi pagament</th>
+            <th concordion:assertEquals="#valid">Valid</th>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>1</td>
+            <td>Excursio pagada amb exit</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>1</td>
+            <td>L'excusió ja esta pagada</td>
+        </tr>
+        <tr>
+            <td>ajaleo@gmail.com</td>
+            <td>7</td>
+            <td>No s'ha trobat el pagament</td>
+        </tr>
+        <tr>
+            <td>dtomacal@yahoo.cat</td>
+            <td>5</td>
+            <td>Excursio pagada amb exit</td>
+        </tr>
+
+    </table>
+</div>
+
 </body>
 </html>

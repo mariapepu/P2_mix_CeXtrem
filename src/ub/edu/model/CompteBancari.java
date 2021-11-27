@@ -14,4 +14,9 @@ public class CompteBancari implements MetodePagament {
         p.setEstaPagat(true);
         return "Excursio pagada amb exit";
     }
+
+    @Override
+    public String nomMetode() {
+        return "Compte Bancari";
+    }
 }

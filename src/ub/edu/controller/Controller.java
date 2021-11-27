@@ -4,12 +4,11 @@ import ub.edu.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Controller {
-    private CarteraSocis carteraSocis;   // Model
-    private CatalegExcursions catalegExcursions;
+    private final CarteraSocis carteraSocis;   // Model
+    private final CatalegExcursions catalegExcursions;
     private Map<String, Pagament> pagamentsMap;
 
 
@@ -23,28 +22,24 @@ public class Controller {
     }
 
     /*-----------------------------------------------------------------------------------------------------------------
-            PAgament init
+            PAGAMENTS init
      ----------------------------------------------------------------------------------------------------------------*/
 
     public void iniPagamentsMap() {
         pagamentsMap = new HashMap<>();
-        addPagament("Delta de l'Ebre", "Ciclisme", "001", "ajaleo@gmail.com", false);
-        addPagament("Delta de l'Ebre", "Kayak", "002", "ajaleo@gmail.com", false);
-        addPagament("La Foradada", "Escalada", "003", "ajaleo@gmail.com", true);
-        addPagament("La Foradada", "Escalada", "005", "dtomacal@yahoo.cat", false);
-        addPagament("Delta de l'Ebre", "Kayak", "006", "dtomacal@yahoo.cat", false);
+        addPagament("Delta de l'Ebre", "Ciclisme", "1", "ajaleo@gmail.com", false);
+        addPagament("Delta de l'Ebre", "Kayak", "2", "ajaleo@gmail.com", false);
+        addPagament("La Foradada", "Escalada", "3", "ajaleo@gmail.com", true);
+        addPagament("La Foradada", "Escalada", "5", "dtomacal@yahoo.cat", false);
+        addPagament("Delta de l'Ebre", "Kayak", "6", "dtomacal@yahoo.cat", false);
     }
 
     private void addPagament(String e, String a, String id_transaccio, String soci, boolean estat) {
         Excursio exc = catalegExcursions.find(e);
         Activitat act = exc.getActivitat(a);
-        pagamentsMap.put(id_transaccio, new Pagament(exc, act, id_transaccio, carteraSocis.find(soci), estat));
         Soci s = carteraSocis.find(soci);
+        pagamentsMap.put(id_transaccio, new Pagament(exc, act, id_transaccio, s, estat));
         s.addPagament(id_transaccio, new Pagament(exc, act, id_transaccio, s, estat));
-    }
-
-    private List<Pagament> getPagamentList() {
-        return new ArrayList<>(pagamentsMap.values());
     }
 
      /*------------------------------------------------------------------------------------------------------------------------------------------
@@ -62,16 +57,12 @@ public class Controller {
     public String validateRegisterSoci(String username, String password) {
         int esValid = carteraSocis.validateRegisterSoci(username, password);
 
-        switch (esValid) {
-            case -1:
-                return "El nom ja existeix";
-            case -2:
-                return "Contrassenya no vàlida";
-            case -3:
-                return "Email incorrecte";
-
-        }
-        return "Soci creat correctament";
+        return switch (esValid) {
+            case -1 -> "El nom ja existeix";
+            case -2 -> "Contrassenya no vàlida";
+            case -3 -> "Email incorrecte";
+            default -> "Soci creat correctament";
+        };
     }
 
     public String findSoci(String a) {
@@ -110,6 +101,11 @@ public class Controller {
         try {
             Pagament p = s.findPagamentByAct(act);
             if (!p.getEstaPagat()) {
+                if (s.getCompteBancari() != null) {
+                    printInfoPagament(p, s.getCompteBancari());
+                } else {
+                    return "L'usuari no te compte bancari asociat";
+                }
                 return s.pagarCompteBancari(p);
             } else {
                 return "L'excusió ja esta pagada";
@@ -124,6 +120,7 @@ public class Controller {
         try {
             Pagament p = s.findPagament(id_pagament);
             if (!p.getEstaPagat()) {
+                printInfoPagament(p, mp);
                 return s.pagar(p, mp);
             } else {
                 return "L'excusió ja esta pagada";
@@ -146,11 +143,19 @@ public class Controller {
         pagamentsMap.put(str, p);
     }
 
+    public void printInfoPagament(Pagament p, MetodePagament mp) {
+        System.out.println("--------------------------------------");
+        System.out.println("Mètode de pagament: " + mp.nomMetode());
+        System.out.println("--------------------------------------");
+        p.printInfo();
+        System.out.println(" ");
+    }
+
     /*------------------------------------------------------------------------------------------------------------------------------------------
         ESPECIE
      ---------------------------------------------------------------------------------------------------------------------------------------- */
-    public Especie afegirEspecie(String nomEspecie) {
-        return catalegExcursions.afegirEspecie(nomEspecie);
+    public void afegirEspecie(String nomEspecie) {
+        catalegExcursions.afegirEspecie(nomEspecie);
     }
 
     public void afegirEspecieExcursio(String nomEspecie, String nomExcursio) {
@@ -184,6 +189,7 @@ public class Controller {
         if (carteraSocis.find(nomSoci) == null) {
             return "Correu inexistent";
         }
+
         if (catalegExcursions.find(nomExcursio) == null) {
             return "Excursio no existent";
         }
@@ -194,7 +200,6 @@ public class Controller {
 
         if (!actComprada(catalegExcursions.getActivitatByName(nomExcursio, nomActivitat), carteraSocis.find(nomSoci))) {
             return "L'activitat encara no ha estat comprada";
-
         }
 
         if (comentari.isEmpty()) {
@@ -208,11 +213,7 @@ public class Controller {
     }
 
     public boolean actComprada(Activitat a, Soci s) {
-        if (s.findPagamentByAct(a) == null || s.findPagamentByAct(a).getEstaPagat() == false) {
-            return false;
-        } else {
-            return true;
-        }
+        return s.findPagamentByAct(a) != null && s.findPagamentByAct(a).getEstaPagat();
     }
 
     public ArrayList<String> llistarComentaris(String nomExcursio, String nomActivitat) {

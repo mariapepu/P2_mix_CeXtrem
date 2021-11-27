@@ -29,7 +29,6 @@ public class CarteraSocis {
         llista = listSocis;
     }
 
-
     public Soci find(String username) {
         for (Soci c : llista) {
             if (c.getName().equals(username)) return c;

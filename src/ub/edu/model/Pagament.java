@@ -28,20 +28,12 @@ public class Pagament {
         return id_transaccio;
     }
 
-    public void setIdTrans(String id) {
-        this.id_transaccio = id;
-    }
-
     public String getNomSoci() {
         return soci.getName();
     }
 
     public float getValor() {
         return valor;
-    }
-
-    public void setValor(float valor) {
-        this.valor = valor;
     }
 
     public Activitat getActivitat() {
@@ -62,6 +54,20 @@ public class Pagament {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    public void printInfo(){
+        System.out.println("Soci: " + getNomSoci());
+        System.out.println("Pagament: " + id_transaccio);
+        System.out.println("Concepte: " + concepte);
+        System.out.println("Valor: " + valor);
+        System.out.println("Data " + data);
+        if (esta_pagat){
+            System.out.println("Estat: " + "Pagat" );
+        }else{
+            System.out.println("Estat: " + "Pendent de pagament");
+        }
+
     }
 
 }
