@@ -23,7 +23,7 @@ public class pagarActivitat {
     }
 
     public String pagarAmbBizum(String user, String exc, String act) {
-        return controlador.pagar(user, exc, act, new Bizum(10.6f));
+        return controlador.pagar(user, exc, act, new Bizum("666 666 666"));
     }
 
     public String pagarAmbPaypal(String user, String exc, String act) {

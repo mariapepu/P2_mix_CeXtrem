@@ -1,11 +1,10 @@
 package ub.edu.model;
 
 public class Bizum implements MetodePagament {
-    int telf_desti;
-    float valor;
+    String telf_desti;
 
-    public Bizum(float valor) {
-        this.valor = valor;
+    public Bizum(String telf_desti) {
+        this.telf_desti = telf_desti;
     }
 
     public String pagar(Pagament p) {

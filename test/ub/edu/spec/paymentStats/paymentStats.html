@@ -1,0 +1,33 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion" lang="ca-ES">
+<head>
+    <title>UC15: Veure estadistiques dels metodes de pagament de la app</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>UC15: Veure estadistiques dels metodes de pagament de la app</h1>
+
+<h4>Acceptance Criteria 15.1: stats: estaditiques inicials</h4>
+<p>
+    Iniciem la app, llegim el mapa de pagaments i elaborem la estadistica.
+</p>
+<div c:example="one">
+    <h4>Example del test d'acceptació 15.1</h4>
+    Inicialitzem el mapa de pagaments i calculem quants hi ha de cada tipus de metode:
+    Com que només hi ha un pagament fet i s'ha fet amb compte bancari, pertant
+    el sistema hauria de donar <span c:assertEquals="stats()">Estadistiques metodes de pagament: Compte Bancari: 100,00% Bizum: 0,00% Paypal: 0,00%.</span>
+</div>
+
+<h4>Acceptance Criteria 15.2: stats: estaditiques modificades</h4>
+<p>
+    Afegim nous pagaments, llegim el mapa de pagaments i elaborem la estadistica.
+</p>
+<div c:example="two">
+    <h4>Example del test d'acceptació 15.2</h4>
+    <span c:execute="mesPagaments()"></span>
+    Actualitzem el mapa de pagaments i calculem quants hi ha de cada tipus de metode:
+    Hi ha un total de 6 pagaments, 2 de compte bancari, 1 de paypal i 3 de bizum, pertant
+    el sistema hauria de donar <span c:assertEquals="stats()">Estadistiques metodes de pagament: Compte Bancari: 33,33% Bizum: 50,00% Paypal: 16,67%.</span>
+</div>
+
+</body>
+</html>

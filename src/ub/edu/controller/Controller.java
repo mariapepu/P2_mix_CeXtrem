@@ -5,6 +5,7 @@ import ub.edu.resources.service.AbstractFactoryData;
 import ub.edu.resources.service.DataService;
 import ub.edu.resources.service.FactoryMOCK;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,11 +72,12 @@ public class Controller {
 
     public void iniPagamentsMap() {
         pagamentsMap = new HashMap<>();
-        addPagament("Delta de l'Ebre", "Ciclisme", "1", "ajaleo@gmail.com", false);
-        addPagament("Delta de l'Ebre", "Kayak", "2", "ajaleo@gmail.com", false);
-        addPagament("La Foradada", "Escalada", "3", "ajaleo@gmail.com", true);
-        addPagament("La Foradada", "Escalada", "5", "dtomacal@yahoo.cat", false);
-        addPagament("Delta de l'Ebre", "Kayak", "6", "dtomacal@yahoo.cat", false);
+        addPagament("Delta de l'Ebre", "Ciclisme", "0", "ajaleo@gmail.com", false);
+        addPagament("Delta de l'Ebre", "Kayak", "1", "ajaleo@gmail.com", false);
+        addPagament("La Foradada", "Escalada", "2", "ajaleo@gmail.com", true);
+        addPagament("La Foradada", "Escalada", "3", "dtomacal@yahoo.cat", false);
+        addPagament("Delta de l'Ebre", "Kayak", "4", "dtomacal@yahoo.cat", false);
+
     }
 
     private void addPagament(String e, String a, String id_transaccio, String soci, boolean estat) {
@@ -85,7 +87,11 @@ public class Controller {
         Pagament p = new Pagament(exc, act, id_transaccio, s, estat);
         pagamentsMap.put(id_transaccio, p);
         s.addPagament(id_transaccio, p);
-        p.setMetodePagament(new CompteBancari(soci, "ES66 6666 6666 6666"));
+
+        //sol per inicialitzar les estadistiques
+        if (p.getEstaPagat()) {
+            p.setMetodePagament(new CompteBancari(soci, "ES66 6666 6666 6666"));
+        }
     }
 
      /*------------------------------------------------------------------------------------------------------------------------------------------
@@ -188,10 +194,12 @@ public class Controller {
 
     public void reservarActivitat(String nomUsuari, String nomExc, String nomAct) {
         Soci s = carteraSocis.find(nomUsuari);
-        String str = String.valueOf(pagamentsMap.size());
+        int i = pagamentsMap.size();
+        String str = "";
+        str += i;
         Pagament p = new Pagament(catalegExcursions.find(nomExc), catalegExcursions.getActivitatByName(nomExc, nomAct), str, s, false);
         s.addPagament(str, p);
-        addPagament(p.getExcursio().getNom(), p.getActivitat().getNom(), p.getIdTrans(), p.getNomSoci(), p.getEstaPagat());
+        pagamentsMap.put(str, p);
     }
 
     public void printInfoPagament(Pagament p, MetodePagament mp) {
@@ -275,28 +283,32 @@ public class Controller {
         APP PAYMENT STATS
      ------------------------------------------------------------------------------------------------------------------------------------------- */
     public String stats() {
-        int bizum = 0, paypal = 0, cb = 0;
+        double bizum = 0, paypal = 0, cb = 0;
         for (Pagament p : pagamentsMap.values()) {
-            if (p.getMetodePagament().nomMetode().equals("Bizum")) {
-                bizum++;
-            }
-            if (p.getMetodePagament().nomMetode().equals("Paypal")) {
-                paypal++;
-            }
-            if (p.getMetodePagament().nomMetode().equals("Compte Bancari")) {
-                cb++;
+            if (p.getEstaPagat()) {
+                if (p.getMetodePagament().nomMetode().equals("Bizum")) {
+                    bizum++;
+                }
+                if (p.getMetodePagament().nomMetode().equals("Paypal")) {
+                    paypal++;
+                }
+                if (p.getMetodePagament().nomMetode().equals("Compte Bancari")) {
+                    cb++;
+                }
             }
         }
-
+        double total = bizum + paypal + cb;
         String s;
-        s = "Estadistiques metodes de pagament: " + " Compte Bancari: " + toPercent(cb, pagamentsMap.size()) + " Bizum: "
-                + toPercent(bizum, pagamentsMap.size()) + " Paypal: " + toPercent(paypal, pagamentsMap.size());
+        s = "Estadistiques metodes de pagament: " + " Compte Bancari: " + toPercent(cb, total) + "% " + " Bizum: "
+                + toPercent(bizum, total) + "% " + " Paypal: " + toPercent(paypal, total) + "%.";
 
         return s;
     }
 
 
-    public double toPercent(int elems, int total) {
-        return elems * 100 / total;
+    public String toPercent(double elems, double total) {
+        double percent = (elems * 100) / total;
+        DecimalFormat formato1 = new DecimalFormat("0.00");
+        return formato1.format(percent);
     }
 }
