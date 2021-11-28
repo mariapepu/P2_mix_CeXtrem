@@ -6,8 +6,8 @@ import java.util.TreeMap;
 
 public class Soci {
     CompteBancari compteBancari;
-    private final String pwd;
-    private final String nom;
+    private String pwd;
+    private String nom;
     private final Map<String, Pagament> llistaPagaments;
 
 
@@ -24,6 +24,18 @@ public class Soci {
 
     public String getName() {
         return nom;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public void setName(String nom) {
+        this.nom = nom;
+    }
+
+    public Map<String, Pagament> getLlistaPagaments() {
+        return llistaPagaments;
     }
 
     public CompteBancari getCompteBancari() {

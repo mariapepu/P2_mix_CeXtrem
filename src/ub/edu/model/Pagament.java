@@ -12,6 +12,7 @@ public class Pagament {
     Activitat a;
     String concepte;
     private LocalDate data;
+    private  MetodePagament mp;
 
     public Pagament(Excursio e, Activitat a, String id_transaccio, Soci soci, boolean esta_pagat) {
         this.e = e;
@@ -35,6 +36,10 @@ public class Pagament {
     public float getValor() {
         return valor;
     }
+    public Excursio getExcursio() {
+        return e;
+    }
+
 
     public Activitat getActivitat() {
         return a;
@@ -54,6 +59,14 @@ public class Pagament {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    public MetodePagament getMetodePagament() {
+        return this.mp;
+    }
+
+    public void setMetodePagament(MetodePagament mp) {
+        this.mp = mp;
     }
 
     public void printInfo(){

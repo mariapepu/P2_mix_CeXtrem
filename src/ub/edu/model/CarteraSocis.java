@@ -7,13 +7,13 @@ import java.util.regex.Pattern;
 
 public class CarteraSocis {
     private static final Pattern passwordPattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$");
-    private List<Soci> llista;
+    private final List<Soci> llista;
 
-    public CarteraSocis() {
-        iniCarteraSocis();
+    public CarteraSocis(List<Soci> allSocis) {
+        llista = allSocis;
     }
 
-    public void iniCarteraSocis() {
+    /*public void iniCarteraSocis() {
         List<Soci> listSocis = new ArrayList<>();
         listSocis.add(new Soci("ajaleo@gmail.com", "ajaleoPassw7"));
         listSocis.add(new Soci("dtomacal@yahoo.cat", "Qwertyft5"));
@@ -27,7 +27,7 @@ public class CarteraSocis {
         listSocis.add(new Soci("judit121@gmail.com", "Ordinador1"));
 
         llista = listSocis;
-    }
+    }*/
 
     public Soci find(String username) {
         for (Soci c : llista) {
@@ -36,9 +36,13 @@ public class CarteraSocis {
         return null;
     }
 
+    public List<Soci> getLlista() {
+        return llista;
+    }
+
     /*--------------------------
-           REGISTRAR SOCI
-    ----------------------------*/
+               REGISTRAR SOCI
+        ----------------------------*/
     public boolean validatePassword(String b) {
         return passwordPattern.matcher(b).matches();
     }
@@ -96,6 +100,5 @@ public class CarteraSocis {
             return "No s'ha pogut afegir";
         }
     }
-
 
 }

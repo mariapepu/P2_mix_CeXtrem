@@ -1,30 +1,24 @@
 package ub.edu.model;
 
+import ub.edu.resources.service.AbstractFactoryData;
+import ub.edu.resources.service.DataService;
+import ub.edu.resources.service.FactoryMOCK;
+
 import java.util.*;
 
 public class CatalegExcursions {
+    private final DataService dataService;         // Connexio amb les dades
     private Map<String, Excursio> excursionsMap;
     private final Map<String, Especie> especiesMap;
 
 
-    public CatalegExcursions() {
-        iniExcursionsMap();
+    public CatalegExcursions(Map<String, Excursio> excursionsMap) {
+        AbstractFactoryData factory = new FactoryMOCK();
+        dataService = new DataService(factory);
+
+        this.excursionsMap = excursionsMap;
         iniActivitatsMap();
         especiesMap = new HashMap<>();
-    }
-
-    public void iniExcursionsMap() {
-        excursionsMap = new HashMap<>();
-        addExcursio("Museu Miró", "29/09/2021");
-        addExcursio("La Foradada", "04/10/2021");
-        addExcursio("El camí des Correu", "10/10/2021");
-        addExcursio("Delta de l'Ebre", "11/10/2021");
-        addExcursio("El PedraForca", "13/10/2021");
-        addExcursio("Colònia Güell", "22/10/2021");
-        addExcursio("Castell de Cardona", "24/10/2021");
-        addExcursio("Aiguamolls de l'Empordà", "27/10/2021");
-        addExcursio("Cap de Creus i Cadaqués", "01/11/2021");
-        addExcursio("Aigüestortes i Sant Maurici", "03/11/2021");
     }
 
     public void iniActivitatsMap() {
@@ -36,11 +30,6 @@ public class CatalegExcursions {
     /*--------------------------------------------------------------------------------------------------------------------------------------------
                     EXCURSIO
     ------------------------------------------------------------------------------------------------------------------------------------------ */
-
-    private void addExcursio(String nom, String dataText) {
-        excursionsMap.put(nom, new Excursio(nom, dataText));
-    }
-
     public List<Excursio> getExcursionsList() {
         return new ArrayList<>(excursionsMap.values());
     }
@@ -86,19 +75,8 @@ public class CatalegExcursions {
                   BUSCAR EXCURSIONS
     ------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-    public Iterable<String> cercaExcursions() {
-        SortedSet<String> especies = new TreeSet<>();
-
-        if (especiesMap.size() == 0) {
-            especies.add("No hi han espècies enregistrades");
-            return especies;
-        }
-
-        for (Especie especie : especiesMap.values()) {
-            especies.add(especie.getNom() + " " + comptarExcursionsEspecie(especie));
-        }
-
-        return especies;
+    public Iterable<String> cercaExcursions() throws Exception {
+        return dataService.cercaExcursions();
     }
 
     /*--------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,36 +95,21 @@ public class CatalegExcursions {
                       ESPECIE
     ------------------------------------------------------------------------------------------------------------------------------------------- */
 
-    public Especie afegirEspecie(String nomEspecie) {
-        Especie especie;
-        if (especiesMap.containsKey(nomEspecie)) {
-            especie = especiesMap.get(nomEspecie);
-        } else {
-            especie = new Especie(nomEspecie);
-            especiesMap.put(nomEspecie, especie);
-        }
-        return especie;
-    }
-
     public void afegirEspecieExcursio(String nomEspecie, String nomExcursio) {
-        Especie especie = afegirEspecie(nomEspecie);
-        excursionsMap.get(nomExcursio).addEspecie(especie);
-
-    }
-
-    private int comptarExcursionsEspecie(Especie especie) {
-        int count = 0;
-        for (Excursio excursio : excursionsMap.values()) {
-            if (excursio.containsEspecie(especie)) count++;
+        try {
+            dataService.afegirEspecie(nomEspecie,nomExcursio);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return count;
+
     }
 
     /*--------------------------------------------------------------------------------------------------------------------------------------------
                 COMENTAR ACTIVITAT
     -------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    public Activitat getActivitatByName(String idExcursio, String titol) {
+    public Activitat
+    getActivitatByName(String idExcursio, String titol) {
         Excursio e = this.find(idExcursio);
         HashMap<String, Activitat> activitats = (HashMap<String, Activitat>) e.getActivitatsMap();
 

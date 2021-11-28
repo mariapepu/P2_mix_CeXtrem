@@ -15,17 +15,15 @@ public class cercaExcursions {
         controlador = new Controller();
     }
 
-    public Iterable<String> cercaExcursions() {
+    public Iterable<String> cercaExcursions() throws Exception {
         return controlador.cercaExcursions();
     }
 
     public void afegirEspecies() {
-        controlador.afegirEspecieExcursio("Llúdriga", "Museu Miró");
-        controlador.afegirEspecieExcursio("Llúdriga", "La Foradada");
-        controlador.afegirEspecieExcursio("Llúdriga", "El camí des Correu");
-        controlador.afegirEspecie("Milà Reial");
-        controlador.afegirEspecieExcursio("Turó europeu", "Museu Miró");
-        controlador.afegirEspecieExcursio("Turó europeu", "La Foradada");
+        controlador.afegirEspecieExcursio("Llop", "Museu Miró");
+        controlador.afegirEspecieExcursio("Llop", "La Foradada");
+        controlador.afegirEspecieExcursio("Ratolí de camp","");
+
     }
 
 }

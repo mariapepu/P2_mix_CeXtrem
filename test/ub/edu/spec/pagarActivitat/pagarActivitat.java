@@ -22,12 +22,12 @@ public class pagarActivitat {
         return controlador.pagarCompteBanc(user, exc, act);
     }
 
-    public String pagarAmbBizum(String user, String pagament) {
-        return controlador.pagar(user, pagament, new Bizum(10.6f));
+    public String pagarAmbBizum(String user, String exc, String act) {
+        return controlador.pagar(user, exc, act, new Bizum(10.6f));
     }
 
-    public String pagarAmbPaypal(String user, String pagament) {
-        return controlador.pagar(user, pagament, new PayPal(user));
+    public String pagarAmbPaypal(String user, String exc, String act) {
+        return controlador.pagar(user, exc, act, new PayPal(user));
     }
 
 }

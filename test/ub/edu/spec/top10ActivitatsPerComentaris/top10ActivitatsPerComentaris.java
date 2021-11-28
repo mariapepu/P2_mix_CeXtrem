@@ -87,15 +87,11 @@ public class top10ActivitatsPerComentaris {
         }
     }
 
-    /*public void initUser(String nomSoci) {
-        controlador.afegirBizum(nomSoci, "666 666 666");
-        controlador.pagarActivitat(nomSoci, "Delta de l'Ebre", "Ciclisme");
-        controlador.pagarActivitat(nomSoci, "La Foradada", "Escalada");
-        controlador.afegirCompteBancari(nomSoci, "ES66 6666 6666 6666");
-        controlador.pagarActivitat(nomSoci, "Delta de l'Ebre", "Kayak");
-    }
-*/
     public ArrayList<String> visualitzaTop10ActivitatsPerComentaris() {
         return controlador.top10ActivitatsPerComentaris();
+    }
+
+    public String stats() {
+        return controlador.stats();
     }
 }

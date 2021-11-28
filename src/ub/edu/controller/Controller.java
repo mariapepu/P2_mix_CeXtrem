@@ -1,24 +1,68 @@
 package ub.edu.controller;
 
 import ub.edu.model.*;
+import ub.edu.resources.service.AbstractFactoryData;
+import ub.edu.resources.service.DataService;
+import ub.edu.resources.service.FactoryMOCK;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Controller {
-    private final CarteraSocis carteraSocis;   // Model
-    private final CatalegExcursions catalegExcursions;
+    private final DataService dataService;         // Connexio amb les dades
+    private CarteraSocis carteraSocis;   // Model
+    private CatalegExcursions catalegExcursions;
     private Map<String, Pagament> pagamentsMap;
 
 
     public Controller() {
+        // Origen de les dades
+        AbstractFactoryData factory = new FactoryMOCK();
+        dataService = new DataService(factory);
 
-        this.catalegExcursions = new CatalegExcursions();
-        this.carteraSocis = new CarteraSocis();
+        try {
+            iniCarteraSocis();
+            iniCatalegExcursions();
+            initExcursionsEspecie(); //carreguem les especies a les excursions
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
         iniPagamentsMap();
-        pagamentsMap = new HashMap<>();
 
+    }
+
+   /*-----------------------------------------------------------------------------------------------------------------
+             inits
+    ----------------------------------------------------------------------------------------------------------------*/
+
+    public void iniCarteraSocis() throws Exception {
+        List<Soci> l = dataService.getAllSocis();
+        if (l != null) {
+            carteraSocis = new CarteraSocis(l);
+        }
+    }
+
+    public void iniCatalegExcursions() throws Exception {
+        List<Excursio> m = dataService.getAllExcursions();
+        if (m != null) {
+            catalegExcursions = new CatalegExcursions(dataService.getAllExcursions().stream()
+                    .collect(Collectors.toMap(Excursio::getNom, Function.identity())));
+        }
+    }
+
+    public void initExcursionsEspecie() {
+        for (Map.Entry<Especie, ArrayList<String>> entry : dataService.getLlistaEspecies().entrySet()) {
+            Especie especie = entry.getKey();
+            List<String> excursions = entry.getValue();
+            for (String nomExcursio : excursions) {
+                catalegExcursions.find(nomExcursio).addEspecie(especie);
+            }
+        }
     }
 
     /*-----------------------------------------------------------------------------------------------------------------
@@ -38,8 +82,10 @@ public class Controller {
         Excursio exc = catalegExcursions.find(e);
         Activitat act = exc.getActivitat(a);
         Soci s = carteraSocis.find(soci);
-        pagamentsMap.put(id_transaccio, new Pagament(exc, act, id_transaccio, s, estat));
-        s.addPagament(id_transaccio, new Pagament(exc, act, id_transaccio, s, estat));
+        Pagament p = new Pagament(exc, act, id_transaccio, s, estat);
+        pagamentsMap.put(id_transaccio, p);
+        s.addPagament(id_transaccio, p);
+        p.setMetodePagament(new CompteBancari(soci, "ES66 6666 6666 6666"));
     }
 
      /*------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,10 +149,12 @@ public class Controller {
             if (!p.getEstaPagat()) {
                 if (s.getCompteBancari() != null) {
                     printInfoPagament(p, s.getCompteBancari());
+                    p.setMetodePagament(s.getCompteBancari());
+                    return s.pagarCompteBancari(p);
                 } else {
                     return "L'usuari no te compte bancari asociat";
                 }
-                return s.pagarCompteBancari(p);
+
             } else {
                 return "L'excusió ja esta pagada";
             }
@@ -115,12 +163,15 @@ public class Controller {
         }
     }
 
-    public String pagar(String soci, String id_pagament, MetodePagament mp) {
+    public String pagar(String soci, String nomExc, String nomAct, MetodePagament mp) {
         Soci s = carteraSocis.find(soci);
+        Activitat act = catalegExcursions.getActivitatByName(nomExc, nomAct);
+
         try {
-            Pagament p = s.findPagament(id_pagament);
+            Pagament p = s.findPagamentByAct(act);
             if (!p.getEstaPagat()) {
                 printInfoPagament(p, mp);
+                p.setMetodePagament(mp);
                 return s.pagar(p, mp);
             } else {
                 return "L'excusió ja esta pagada";
@@ -140,7 +191,7 @@ public class Controller {
         String str = String.valueOf(pagamentsMap.size());
         Pagament p = new Pagament(catalegExcursions.find(nomExc), catalegExcursions.getActivitatByName(nomExc, nomAct), str, s, false);
         s.addPagament(str, p);
-        pagamentsMap.put(str, p);
+        addPagament(p.getExcursio().getNom(), p.getActivitat().getNom(), p.getIdTrans(), p.getNomSoci(), p.getEstaPagat());
     }
 
     public void printInfoPagament(Pagament p, MetodePagament mp) {
@@ -154,15 +205,11 @@ public class Controller {
     /*------------------------------------------------------------------------------------------------------------------------------------------
         ESPECIE
      ---------------------------------------------------------------------------------------------------------------------------------------- */
-    public void afegirEspecie(String nomEspecie) {
-        catalegExcursions.afegirEspecie(nomEspecie);
-    }
-
     public void afegirEspecieExcursio(String nomEspecie, String nomExcursio) {
         catalegExcursions.afegirEspecieExcursio(nomEspecie, nomExcursio);
     }
 
-    public Iterable<String> cercaExcursions() {
+    public Iterable<String> cercaExcursions() throws Exception {
         return catalegExcursions.cercaExcursions();
     }
 
@@ -224,4 +271,32 @@ public class Controller {
         return catalegExcursions.top10ActivitatsPerComentaris();
     }
 
+    /*-------------------------------------------------------------------------------------------------------------------------------------------
+        APP PAYMENT STATS
+     ------------------------------------------------------------------------------------------------------------------------------------------- */
+    public String stats() {
+        int bizum = 0, paypal = 0, cb = 0;
+        for (Pagament p : pagamentsMap.values()) {
+            if (p.getMetodePagament().nomMetode().equals("Bizum")) {
+                bizum++;
+            }
+            if (p.getMetodePagament().nomMetode().equals("Paypal")) {
+                paypal++;
+            }
+            if (p.getMetodePagament().nomMetode().equals("Compte Bancari")) {
+                cb++;
+            }
+        }
+
+        String s;
+        s = "Estadistiques metodes de pagament: " + " Compte Bancari: " + toPercent(cb, pagamentsMap.size()) + " Bizum: "
+                + toPercent(bizum, pagamentsMap.size()) + " Paypal: " + toPercent(paypal, pagamentsMap.size());
+
+        return s;
+    }
+
+
+    public double toPercent(int elems, int total) {
+        return elems * 100 / total;
+    }
 }

@@ -34,4 +34,5 @@ public class llistarComentarisActivitat {
     public ArrayList<String> llistarComentaris(String excursio, String activitat) {
         return controlador.llistarComentaris(excursio, activitat);
     }
+
 }

@@ -74,30 +74,35 @@
 </p>
 
 <div concordion:example="two">
-    <table concordion:execute="#valid=pagarAmbBizum(#user, #pagament)">
+    <table concordion:execute="#valid=pagarAmbBizum(#user,  #exc, #act)">
         <tr>
             <th concordion:set="#user">nom soci</th>
-            <th concordion:set="#pagament">codi pagament</th>
+            <th concordion:set="#exc">excursio</th>
+            <th concordion:set="#act">activitats</th>
             <th concordion:assertEquals="#valid">Valid</th>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>1</td>
+            <td>Delta de l'Ebre</td>
+            <td>Ciclisme</td>
             <td>Excursio pagada amb exit</td>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>1</td>
+            <td>Delta de l'Ebre</td>
+            <td>Ciclisme</td>
             <td>L'excusió ja esta pagada</td>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>7</td>
+            <td>Delta de l'Ebre</td>
+            <td>Parapent</td>
             <td>No s'ha trobat el pagament</td>
         </tr>
         <tr>
             <td>dtomacal@yahoo.cat</td>
-            <td>5</td>
+            <td>La Foradada</td>
+            <td>Escalada</td>
             <td>Excursio pagada amb exit</td>
         </tr>
 
@@ -105,30 +110,35 @@
 </div>
 
 <div concordion:example="tree">
-    <table concordion:execute="#valid=pagarAmbPaypal(#user, #pagament)">
+    <table concordion:execute="#valid=pagarAmbPaypal(#user, #exc, #act)">
         <tr>
             <th concordion:set="#user">nom soci</th>
-            <th concordion:set="#pagament">codi pagament</th>
+            <th concordion:set="#exc">excursio</th>
+            <th concordion:set="#act">activitats</th>
             <th concordion:assertEquals="#valid">Valid</th>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>1</td>
+            <td>Delta de l'Ebre</td>
+            <td>Ciclisme</td>
             <td>Excursio pagada amb exit</td>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>1</td>
+            <td>Delta de l'Ebre</td>
+            <td>Ciclisme</td>
             <td>L'excusió ja esta pagada</td>
         </tr>
         <tr>
             <td>ajaleo@gmail.com</td>
-            <td>7</td>
+            <td>Delta de l'Ebre</td>
+            <td>Parapent</td>
             <td>No s'ha trobat el pagament</td>
         </tr>
         <tr>
             <td>dtomacal@yahoo.cat</td>
-            <td>5</td>
+            <td>La Foradada</td>
+            <td>Escalada</td>
             <td>Excursio pagada amb exit</td>
         </tr>
 
